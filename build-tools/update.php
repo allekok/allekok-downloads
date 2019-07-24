@@ -1,10 +1,12 @@
 <?php
-/* download allekok.com's stuff */
+/* download 'allekok.com' stuff */
 
 /* Run */
 $functions = [
+    'update_image',
     'update_image_allekok_images',
     'update_image_sent_by_users',
+    'update_text',
     'update_text_contributors',
     'update_text_infos_written_by_users',
     'update_sql',
@@ -66,6 +68,7 @@ function update_image_allekok_images ($poet='all')
 /* allekok.com/text/contributors */
 function update_text_contributors ()
 {
+    $url = 'https://allekok.com/pitew/contributors/';
     $path = 'downloads/allekok.com/text/contributors/';
     remove_dir($path);
     
@@ -77,13 +80,10 @@ function update_text_contributors ()
 	'poet-descs.txt',
     ];
 
-    foreach ($files as $file)
+    foreach ($files as $o)
     {
-	$path = 'downloads/allekok.com/text/contributors/'.$file;
-	$url = 'https://allekok.com/pitew/contributors/'.$file;
-	$content = download($url);
-	file_put_contents($path, $content);
-	echo "'$path' Updated.\n";
+	file_put_contents($path.$o, download($url.$o));
+	echo "'$path$o' Updated.\n";
     }
     echo "allekok.com/text/contributors -> Done.\n";
 }
@@ -91,18 +91,54 @@ function update_text_contributors ()
 /* allekok.com/image/sent-by-users */
 function update_image_sent_by_users ()
 {
+    $url = 'https://allekok.com/style/img/poets/new/';
+    $list = explode("\n", download($url.'list.txt'));
     
+    $path = 'downloads/allekok.com/image/sent-by-users/';
+    remove_dir($path);
+    
+    foreach ($list as $o)
+    {
+	if(! trim($o)) continue;
+	file_put_contents($path.$o, download($url.$o));
+	echo "'$path$o' Updated.\n";
+    }
+    echo "allekok.com/image/sent-by-users -> Done.\n";
 }
 
 /* allekok.com/text/infos-written-by-users */
 function update_text_infos_written_by_users ()
 {
+    $url = 'https://allekok.com/pitew/res/';
+    $list = explode("\n", download($url.'list.txt'));
     
+    $path = 'downloads/allekok.com/text/infos-written-by-users/';
+    remove_dir($path);
+    
+    foreach ($list as $o)
+    {
+	if(! trim($o)) continue;
+	file_put_contents($path.$o, download($url.$o));
+	echo "'$path$o' Updated.\n";
+    }
+    echo "allekok.com/text/infos-written-by-users -> Done.\n";
 }
 
 /* allekok.com/sql */
 function update_sql ()
 {
     
+}
+
+function update_image ()
+{
+    update_image_allekok_images();
+    update_image_sent_by_users();
+}
+
+function update_text ()
+{
+    update_text_contributors();
+    update_text_infos_written_by_users();
 }
 ?>

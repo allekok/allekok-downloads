@@ -2,8 +2,8 @@
 /* Function */
 function make_list ($path = ".")
 {
-    $not = [".", "..", "index.md", "list.php", ".git",
-	    "LICENSE", "README.md", "_config.yml", "build-tools"];
+    $not = [".", "..", "index.md", ".git", "LICENSE",
+	    "README.md", "_config.yml", "build-tools"];
     $files = [];
     $dir = opendir($path);
     
