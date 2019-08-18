@@ -1,3 +1,3 @@
 # Index
 - [..](..)
-- [120x120](120x120)
+- [profile](profile)

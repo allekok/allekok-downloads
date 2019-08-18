@@ -11,11 +11,18 @@ $functions = [
     'update_text_infos_written_by_users',
     'update_sql',
 ];
-
-foreach(@$argv as $o)
+if(@$argv[1] == 'all')
 {
-    if(in_array($o, $functions))
-	$o();
+    update_text();
+    update_image();
+    update_sql();
+}
+else
+{
+    foreach(@$argv as $o)
+    {
+	if(in_array($o, $functions)) $o();
+    }
 }
 
 /* Functions */
@@ -42,7 +49,7 @@ function remove_dir($path)
 /* allekok.com/image/allekok-images */
 function update_image_allekok_images ($poet='all')
 {
-    $path = 'downloads/allekok.com/image/allekok-images/120x120';
+    $path = 'downloads/allekok.com/image/allekok-images/profile';
     remove_dir($path);
     
     $url = "https://allekok.com/dev/tools/poet.php?poet=$poet";
@@ -57,7 +64,7 @@ function update_image_allekok_images ($poet='all')
 	    continue;
 	$images[] = $img;
 	$filename = substr($img, strrpos($img, '/'));
-	$path = 'downloads/allekok.com/image/allekok-images/120x120'.
+	$path = 'downloads/allekok.com/image/allekok-images/profile'.
 		$filename;
 	file_put_contents($path, download($img));
 	echo "'$path' Updated.\n";
@@ -99,8 +106,10 @@ function update_image_sent_by_users ()
     
     foreach ($list as $o)
     {
-	if(! trim($o)) continue;
-	file_put_contents($path.$o, download($url.$o));
+	$o = trim($o);
+	if(! $o) continue;
+	file_put_contents($path.$o,
+			  download($url.str_replace(' ', '%20', $o)));
 	echo "'$path$o' Updated.\n";
     }
     echo "allekok.com/image/sent-by-users -> Done.\n";
@@ -117,8 +126,10 @@ function update_text_infos_written_by_users ()
     
     foreach ($list as $o)
     {
-	if(! trim($o)) continue;
-	file_put_contents($path.$o, download($url.$o));
+	$o = trim($o);
+	if(! $o) continue;
+	file_put_contents($path.$o,
+			  download($url.str_replace(' ', '%20', $o)));
 	echo "'$path$o' Updated.\n";
     }
     echo "allekok.com/text/infos-written-by-users -> Done.\n";
