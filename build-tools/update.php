@@ -7,6 +7,8 @@ $functions = [
     'update_image_allekok_images',
     'update_image_sent_by_users',
     'update_text',
+    'update_text_QAs',
+    'update_text_comments',
     'update_text_contributors',
     'update_text_infos_written_by_users',
     'update_sql',
@@ -26,10 +28,13 @@ else
 }
 
 /* Functions */
-function download ($url)
+function download ($url, $timeout=1000)
 {
     while(!($content = file_get_contents($url)))
+    {
+	if(!$timeout--) return "";
 	sleep(1);
+    }
     return $content;
 }
 
@@ -135,6 +140,40 @@ function update_text_infos_written_by_users ()
     echo "allekok.com/text/infos-written-by-users -> Done.\n";
 }
 
+/* allekok.com/text/comments */
+function update_text_comments ()
+{
+    $url = "https://allekok.com/about/comments.txt";
+    $path = "downloads/allekok.com/text/comments.txt";
+    file_put_contents($path, download($url));
+    echo "allekok.com/text/comments.txt -> Done.\n";
+}
+
+/* allekok.com/text/QAs */
+function update_text_QAs ()
+{
+    $urls = [
+	"https://allekok.com/desktop/QA.txt",
+	"https://allekok.com/dev/tools/QA.txt",
+	"https://allekok.com/dev/tools/CONTRIBUTING/QA.txt",
+	"https://allekok.com/manual/QA.txt",
+	"https://allekok.com/pitew/QA.txt",
+    ];
+    $paths = [
+	"downloads/allekok.com/text/QAs/desktop.txt",
+	"downloads/allekok.com/text/QAs/dev-tools.txt",
+	"downloads/allekok.com/text/QAs/dev-tools-contributing.txt",
+	"downloads/allekok.com/text/QAs/manual.txt",
+	"downloads/allekok.com/text/QAs/pitew.txt",
+    ];
+    foreach($urls as $i => $url)
+    {
+	file_put_contents($paths[$i], download($url, 5));
+	echo "'{$paths[$i]}' Updated.\n";
+    }
+    echo "allekok.com/text/QAs -> Done.\n";
+}
+
 /* allekok.com/sql */
 function update_sql ()
 {
@@ -149,6 +188,8 @@ function update_image ()
 
 function update_text ()
 {
+    update_text_QAs();
+    update_text_comments();
     update_text_contributors();
     update_text_infos_written_by_users();
 }
