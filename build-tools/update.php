@@ -29,7 +29,7 @@ else
 }
 
 /* Functions */
-function download ($url, $timeout=1000)
+function download ($url, $timeout=5)
 {
     while(!($content = file_get_contents($url)))
     {
@@ -55,6 +55,7 @@ function remove_dir($path)
 /* allekok-website/image/allekok-images */
 function update_image_allekok_images ($poet='all')
 {
+    global $allekok_website;
     $path = 'downloads/allekok-website/image/allekok-images/profile';
     remove_dir($path);
     
@@ -81,7 +82,8 @@ function update_image_allekok_images ($poet='all')
 /* allekok-website/text/contributors */
 function update_text_contributors ()
 {
-    $url = '$allekok_website/pitew/contributors/';
+    global $allekok_website;
+    $url = "$allekok_website/pitew/contributors/";
     $path = 'downloads/allekok-website/text/contributors/';
     remove_dir($path);
     
@@ -104,7 +106,8 @@ function update_text_contributors ()
 /* allekok-website/image/sent-by-users */
 function update_image_sent_by_users ()
 {
-    $url = '$allekok_website/style/img/poets/new/';
+    global $allekok_website;
+    $url = "$allekok_website/style/img/poets/new/";
     $list = explode("\n", download($url.'list.txt'));
     
     $path = 'downloads/allekok-website/image/sent-by-users/';
@@ -124,7 +127,8 @@ function update_image_sent_by_users ()
 /* allekok-website/text/infos-written-by-users */
 function update_text_infos_written_by_users ()
 {
-    $url = '$allekok_website/pitew/res/';
+    global $allekok_website;
+    $url = "$allekok_website/pitew/res/";
     $list = explode("\n", download($url.'list.txt'));
     
     $path = 'downloads/allekok-website/text/infos-written-by-users/';
@@ -144,6 +148,7 @@ function update_text_infos_written_by_users ()
 /* allekok-website/text/comments */
 function update_text_comments ()
 {
+    global $allekok_website;
     $url = "$allekok_website/about/comments.txt";
     $path = "downloads/allekok-website/text/comments.txt";
     file_put_contents($path, download($url));
@@ -153,6 +158,7 @@ function update_text_comments ()
 /* allekok-website/text/QAs */
 function update_text_QAs ()
 {
+    global $allekok_website;
     $urls = [
 	"$allekok_website/desktop/QA.txt",
 	"$allekok_website/dev/tools/QA.txt",
