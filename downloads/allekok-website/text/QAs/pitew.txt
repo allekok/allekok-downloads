@@ -32,3 +32,9 @@ end
 https://allekok.ir/pitew/index.php
 زۆرسپاس.
 end
+چۆن بتوانم دای بەزێنم
+end
+ئاڵەکۆک:
+سڵاو. ئەگەر مەبەستتان دابەزاندنی شێعرەکانی ئاڵەکۆکە، دەتوانن سەردانی لاپەڕەی خوارەوە بکەن:
+https://github.com/allekok/allekok-poems/archive/master.zip
+end
