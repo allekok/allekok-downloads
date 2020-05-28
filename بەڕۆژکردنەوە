@@ -11,6 +11,7 @@ $functions = [
 	'update_text',
 	'update_text_QAs',
 	'update_text_comments',
+	'update_text_donations',
 	'update_text_contributors',
 	'update_text_infos_written_by_users',
 	'update_sql',
@@ -94,6 +95,7 @@ function update_text_contributors ()
 		'pdfs.txt',
 		'poems.txt',
 		'poet-descs.txt',
+		'donations.txt',
 	];
 
 	foreach ($files as $o)
@@ -156,6 +158,16 @@ function update_text_comments ()
 	echo "allekok-website/text/comments.txt -> Done.\n";
 }
 
+/* allekok-website/text/donations */
+function update_text_donations ()
+{
+	global $allekok_website;
+	$url = "$allekok_website/donate/donations.txt";
+	$path = "downloads/allekok-website/text/donations.txt";
+	file_put_contents($path, download($url));
+	echo "allekok-website/text/donations.txt -> Done.\n";
+}
+
 /* allekok-website/text/QAs */
 function update_text_QAs ()
 {
@@ -198,6 +210,7 @@ function update_text ()
 {
 	update_text_QAs();
 	update_text_comments();
+	update_text_donations();
 	update_text_contributors();
 	update_text_infos_written_by_users();
 }
