@@ -33,7 +33,14 @@ else
 /* Functions */
 function download ($url, $timeout=20)
 {
-	while(!($content = file_get_contents($url)))
+	$arrContextOptions = [
+		"ssl" => [
+			"verify_peer" => false,
+			"verify_peer_name" => false,
+		],
+	];
+	while(!($content = file_get_contents(
+		$url, false, stream_context_create($arrContextOptions))))
 	{
 		if(!$timeout--) return "";
 		sleep(1);
