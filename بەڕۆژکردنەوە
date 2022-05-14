@@ -31,7 +31,7 @@ else
 }
 
 /* Functions */
-function download ($url, $timeout=20)
+function download ($url, $timeout=1)
 {
 	while(!($content = file_get_contents($url)))
 	{
@@ -188,7 +188,7 @@ function update_text_QAs ()
 	];
 	foreach($urls as $i => $url)
 	{
-		file_put_contents($paths[$i], download($url, 5));
+		file_put_contents($paths[$i], download($url));
 		echo "'{$paths[$i]}' Updated.\n";
 	}
 	echo "allekok-website/text/QAs -> Done.\n";
