@@ -1,79 +1,72 @@
 #!/usr/bin/php
 <?php
-/* download 'allekok.ir' stuff */
+/* Download "allekok.ir" stuff */
 $allekok_website = "https://allekok.ir";
 
 /* Run */
-$functions = [
-	'update_image',
-	'update_image_allekok_images',
-	'update_image_sent_by_users',
-	'update_text',
-	'update_text_QAs',
-	'update_text_comments',
-	'update_text_donations',
-	'update_text_contributors',
-	'update_text_infos_written_by_users',
-	'update_sql',
-];
-if(@$argv[1] == 'all')
-{
+$functions = ["update_image",
+	      "update_image_allekok_images",
+	      "update_image_sent_by_users",
+	      "update_text",
+	      "update_text_QAs",
+	      "update_text_comments",
+	      "update_text_donations",
+	      "update_text_contributors",
+	      "update_text_infos_written_by_users",
+	      "update_sql"];
+
+if(isset($argv[1]) and $argv[1] == "all") {
 	update_text();
 	update_image();
 	update_sql();
 }
-else
-{
-	foreach(@$argv as $o)
-	{
-		if(in_array($o, $functions)) $o();
+else {
+	foreach($argv as $o) {
+		if(in_array($o, $functions))
+			$o();
 	}
 }
 
 /* Functions */
-function download ($url, $timeout=1)
-{
-	while(!($content = file_get_contents($url)))
-	{
-		if(!$timeout--) return "";
+function download($url, $timeout=1) {
+	while(!($content = file_get_contents($url))) {
+		if(!$timeout--)
+			return "";
 		sleep(1);
 	}
 	return $content;
 }
 
-function remove_dir($path)
-{
-	$ignore = ['.','..'];
+function remove_dir($path) {
+	$ignore = [".", ".."];
 	$files = array_diff(scandir($path), $ignore);
-	foreach($files as $f)
-	{
-		if(is_dir("$path/$f")) 
+	foreach($files as $f) {
+		if(is_dir("$path/$f"))
 			remove_dir("$path/$f");
-		else 
+		else
 			unlink("$path/$f");
 	}
 }
 
 /* allekok-website/image/allekok-images */
-function update_image_allekok_images ($poet='all')
-{
+function update_image_allekok_images($poet="all") {
 	global $allekok_website;
-	$path = 'downloads/allekok-website/image/allekok-images/profile';
+	$path = "downloads/allekok-website/image/allekok-images/profile";
 	remove_dir($path);
-	
+
 	$url = "$allekok_website/dev/tools/poet.php?poet=$poet";
 	while(!($poets = json_decode(download($url), true)))
 		sleep(1);
 
 	$images = [];
-	foreach($poets as $pt)
-	{
-		$img = $pt['img']['_130x130'];
+	foreach($poets as $pt) {
+		$img = $pt["img"]["_130x130"];
 		if(in_array($img, $images))
 			continue;
 		$images[] = $img;
-		$filename = substr($img, strrpos($img, '/'));
-		$path = 'downloads/allekok-website/image/allekok-images/profile'.
+		$filename = substr($img, strrpos($img, "/"));
+		$path = "downloads/allekok-website/image/allekok-images/" .
+			"profile" .
 			$filename;
 		file_put_contents($path, download($img));
 		echo "'$path' Updated.\n";
@@ -82,75 +75,70 @@ function update_image_allekok_images ($poet='all')
 }
 
 /* allekok-website/text/contributors */
-function update_text_contributors ()
-{
+function update_text_contributors() {
 	global $allekok_website;
 	$url = "$allekok_website/pitew/contributors/";
-	$path = 'downloads/allekok-website/text/contributors/';
+	$path = "downloads/allekok-website/text/contributors/";
 	remove_dir($path);
-	
-	$files = [
-		'comments.txt',
-		'images.txt',
-		'pdfs.txt',
-		'poems.txt',
-		'poet-descs.txt',
-		'donations.txt',
-	];
 
-	foreach ($files as $o)
-	{
-		file_put_contents($path.$o, download($url.$o));
+	$files = ["comments.txt",
+		  "images.txt",
+		  "pdfs.txt",
+		  "poems.txt",
+		  "poet-descs.txt",
+		  "donations.txt"];
+
+	foreach($files as $o) {
+		file_put_contents($path . $o, download($url . $o));
 		echo "'$path$o' Updated.\n";
 	}
 	echo "allekok-website/text/contributors -> Done.\n";
 }
 
 /* allekok-website/image/sent-by-users */
-function update_image_sent_by_users ()
-{
+function update_image_sent_by_users() {
 	global $allekok_website;
 	$url = "$allekok_website/style/img/poets/new/";
-	$list = explode("\n", download($url.'list.txt'));
-	
-	$path = 'downloads/allekok-website/image/sent-by-users/';
+	$list = explode("\n", download($url . "list.txt"));
+
+	$path = "downloads/allekok-website/image/sent-by-users/";
 	remove_dir($path);
-	
-	foreach ($list as $o)
-	{
+
+	foreach($list as $o) {
 		$o = trim($o);
-		if(! $o) continue;
-		file_put_contents($path.$o,
-				  download($url.str_replace(' ', '%20', $o)));
+		if(!$o)
+			continue;
+		file_put_contents($path . $o,
+				  download($url .
+					   str_replace(" ", "%20", $o)));
 		echo "'$path$o' Updated.\n";
 	}
 	echo "allekok-website/image/sent-by-users -> Done.\n";
 }
 
 /* allekok-website/text/infos-written-by-users */
-function update_text_infos_written_by_users ()
-{
+function update_text_infos_written_by_users() {
 	global $allekok_website;
 	$url = "$allekok_website/pitew/res/";
-	$list = explode("\n", download($url.'list.txt'));
-	
-	$path = 'downloads/allekok-website/text/infos-written-by-users/';
+	$list = explode("\n", download($url . "list.txt"));
+
+	$path = "downloads/allekok-website/text/infos-written-by-users/";
 	remove_dir($path);
-	
-	foreach ($list as $o)
-	{
+
+	foreach($list as $o) {
 		$o = trim($o);
-		if(! $o) continue;
-		file_put_contents($path.$o,
-				  download($url.str_replace(' ', '%20', $o)));
+		if(!$o)
+			continue;
+		file_put_contents($path . $o,
+				  download($url .
+					   str_replace(" ", "%20", $o)));
 		echo "'$path$o' Updated.\n";
 	}
 	echo "allekok-website/text/infos-written-by-users -> Done.\n";
 }
 
 /* allekok-website/text/comments */
-function update_text_comments ()
-{
+function update_text_comments() {
 	global $allekok_website;
 	$url = "$allekok_website/about/comments.txt";
 	$path = "downloads/allekok-website/text/comments.txt";
@@ -159,8 +147,7 @@ function update_text_comments ()
 }
 
 /* allekok-website/text/donations */
-function update_text_donations ()
-{
+function update_text_donations() {
 	global $allekok_website;
 	$url = "$allekok_website/donate/donations.txt";
 	$path = "downloads/allekok-website/text/donations.txt";
@@ -169,25 +156,20 @@ function update_text_donations ()
 }
 
 /* allekok-website/text/QAs */
-function update_text_QAs ()
-{
+function update_text_QAs() {
 	global $allekok_website;
-	$urls = [
-		"$allekok_website/desktop/QA.txt",
-		"$allekok_website/dev/tools/QA.txt",
-		"$allekok_website/dev/tools/CONTRIBUTING/QA.txt",
-		"$allekok_website/manual/QA.txt",
-		"$allekok_website/pitew/QA.txt",
-	];
-	$paths = [
-		"downloads/allekok-website/text/QAs/desktop.txt",
-		"downloads/allekok-website/text/QAs/dev-tools.txt",
-		"downloads/allekok-website/text/QAs/dev-tools-contributing.txt",
-		"downloads/allekok-website/text/QAs/manual.txt",
-		"downloads/allekok-website/text/QAs/pitew.txt",
-	];
-	foreach($urls as $i => $url)
-	{
+	$urls = ["$allekok_website/desktop/QA.txt",
+		 "$allekok_website/dev/tools/QA.txt",
+		 "$allekok_website/dev/tools/CONTRIBUTING/QA.txt",
+		 "$allekok_website/manual/QA.txt",
+		 "$allekok_website/pitew/QA.txt"];
+	$paths = ["downloads/allekok-website/text/QAs/desktop.txt",
+		  "downloads/allekok-website/text/QAs/dev-tools.txt",
+		  ("downloads/allekok-website/text/QAs/" .
+		   "dev-tools-contributing.txt"),
+		  "downloads/allekok-website/text/QAs/manual.txt",
+		  "downloads/allekok-website/text/QAs/pitew.txt"];
+	foreach($urls as $i => $url) {
 		file_put_contents($paths[$i], download($url));
 		echo "'{$paths[$i]}' Updated.\n";
 	}
@@ -195,19 +177,16 @@ function update_text_QAs ()
 }
 
 /* allekok-website/sql */
-function update_sql ()
-{
-	
+function update_sql() {
+	/* TODO */
 }
 
-function update_image ()
-{
+function update_image() {
 	update_image_allekok_images();
 	update_image_sent_by_users();
 }
 
-function update_text ()
-{
+function update_text() {
 	update_text_QAs();
 	update_text_comments();
 	update_text_donations();
