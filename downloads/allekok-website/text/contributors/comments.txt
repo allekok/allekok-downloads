@@ -1,6 +1,6 @@
-725	171	*
+728	173	*
 208	ئاکۆ مارانی
-102	ناشناس
+103	ناشناس
 68	کەماڵ ڕەحمانی
 52	ئاڵەکۆک
 44	بینایی دیدە
@@ -159,7 +159,9 @@
 1	bnar
 1	aso
 1	Suzan
+1	Shex abdulla mardoxe
 1	Sherko Nikbakht
+1	Paiwand Jawhar
 1	Mohammed ghafoor
 1	Mistefa Mihemed Gezo
 1	Kamil
