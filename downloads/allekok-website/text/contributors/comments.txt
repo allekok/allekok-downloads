@@ -1,6 +1,6 @@
-740	177	*
+742	178	*
 208	ئاکۆ مارانی
-107	ناشناس
+108	ناشناس
 68	کەماڵ ڕەحمانی
 53	ئاڵەکۆک
 44	بینایی دیدە
@@ -168,6 +168,7 @@
 1	Paiwand Jawhar
 1	Mohammed ghafoor
 1	Mistefa Mihemed Gezo
+1	Layad
 1	Kamil
 1	Hosseini
 1	Hana
