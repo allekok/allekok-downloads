@@ -1,7 +1,6 @@
-480	6	*
+480	5	*
 280	amir ahmad
 188	کەماڵ ڕەحمانی
-8	awathiwa1980@gmail.com
+9	awathiwa1980@gmail.com
 2	ڕەحمان جەوان
 1	کاوە فاتحی
-1	awathiwa1980@gmail.com1
